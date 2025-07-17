@@ -1,0 +1,19 @@
+# Fichiers Odoo
+*.log
+*.pyc
+*.swp
+*.bak
+/sessions/
+/odoo-venv/
+
+# Environnements
+venv/
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Système
+.DS_Store
+Thumbs.db

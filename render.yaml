@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: odoo-web
+    runtime: docker
+    plan: free  # Passez à "standard" pour la production
+    env: docker
+    region: frankfurt  # Choisissez la région la plus proche
+    
+    buildCommand: docker build -t odoo-render .
+    startCommand: odoo --config=/etc/odoo/odoo.conf
+    
+    envVars:
+      - key: ADMIN_PASSWORD
+        generateValue: true
+        length: 32
+        
+      # Variables de base de données
+      - key: DB_HOST
+        fromDatabase:
+          name: odoo-db
+          property: connectionString.host
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_USER
+        fromDatabase:
+          name: odoo-db
+          property: connectionString.user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: odoo-db
+          property: connectionString.password
+      - key: DB_NAME
+        fromDatabase:
+          name: odoo-db
+          property: connectionString.database
+
+databases:
+  - name: odoo-db
+    plan: free  # Passez à "standard" pour la production
+    databaseName: odoo_prod
+    user: odoo_user
